@@ -2,23 +2,27 @@ package algorithms
 
 import "fmt"
 
-type BFSFile interface {
-	Visite()
-	IsVisite() bool
-	GetFiles() ([]BFSFile, error)
-	Check() bool
-}
-
 type BFSQueue struct {
-	Files []BFSFile
+	Files []SearchFile
 }
 
-func (b *BFSQueue) EnQueue(f BFSFile) {
+func NewBFSQueue() *BFSQueue {
+	return &BFSQueue{}
+}
+
+func (b *BFSQueue) EnQueue(f SearchFile) {
 	f.Visite()
 	b.Files = append(b.Files, f)
 }
 
-func (b *BFSQueue) DeQueue() BFSFile {
+func (b *BFSQueue) DeQueue() SearchFile {
+	files := b.Files
+	length := len(files)
+	if length == 1 {
+		b.Files = []SearchFile{}
+		return files[0]
+	}
+
 	current, files := b.Files[0], b.Files[1:]
 	b.Files = files
 	return current
@@ -28,16 +32,10 @@ func (b *BFSQueue) IsEmpty() bool {
 	return len(b.Files) == 0
 }
 
-func NewBFSQueue() *BFSQueue {
-	return &BFSQueue{}
-}
-
-func BFSSearch(bFiles []BFSFile) (BFSFile, error) {
-	var current BFSFile
+func BFSSearch(bFile SearchFile) (SearchFile, error) {
 	queue := NewBFSQueue()
-	for _, f := range bFiles {
-		queue.EnQueue(f)
-	}
+	queue.EnQueue(bFile)
+	var current SearchFile
 	for {
 		if queue.IsEmpty() {
 			break

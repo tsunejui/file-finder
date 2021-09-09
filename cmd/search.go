@@ -26,7 +26,20 @@ func init() {
 	searchCommand.Flags().BoolVarP(&trace, "trace-log", "", false, "Viewing the trace logs")
 }
 
+const bfs = "bfs"
+const dfs = "dfs"
+
 func run(cmd *cobra.Command, args []string) error {
+	var finder pkgFinder.Finder
+	switch strategy {
+	case bfs:
+		finder = pkgFinder.NewBFSFinder(directory)
+	case dfs:
+		finder = pkgFinder.NewDFSFinder(directory)
+	default:
+		return fmt.Errorf("invalid strategy: %s", strategy)
+	}
+
 	var fileName string
 	fmt.Printf("\nPlease enter the filename: ")
 	fmt.Scanf("%s", &fileName)
@@ -34,11 +47,10 @@ func run(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("invalid filename")
 	}
 
+	finder.ViewTrace(trace)
 	if trace {
-		fmt.Printf("===trace logs=== \n\n")
+		fmt.Printf("\n===trace logs=== \n\n")
 	}
-
-	finder := pkgFinder.NewFinder(directory).ViewTrace(trace)
 	path, err := finder.FindPath(fileName)
 	if err != nil {
 		return fmt.Errorf("failed to find the file: %v", err)
