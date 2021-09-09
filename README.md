@@ -37,7 +37,7 @@ This tool implement the BFS algorithm and the DFS algorithm in Golang, they are 
 
 Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
 
-reference: https://en.wikipedia.org/wiki/Breadth-first_search#Bias_towards_nodes_of_high_degree
+reference: https://en.wikipedia.org/wiki/Breadth-first_search
 
 <a id="dfs"></a>
 
